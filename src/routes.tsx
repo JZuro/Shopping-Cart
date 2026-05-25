@@ -1,27 +1,19 @@
-import Home from "./Home";
+import App from "./App";
 import Shop from "./Shop";
 import Cart from "./Cart";
 import ErrorPage from "./ErrorPage";
+import Layout from "./Layout";
 
 const routes = [
 	{
-		path: "/",
-		element: <Home />,
+		element: <Layout />,
+		children: [
+			{ path: "/", element: <App /> },
+			{ path: "/shop", element: <Shop /> },
+			{ path: "/cart", element: <Cart /> },
+			{ path: "/*", element: <ErrorPage />, errorElement: <ErrorPage /> },
+		],
 	},
-	{
-		path: "/shop",
-		element: <Shop />,
-	},
-	{
-		path: "/cart",
-		element: <Cart />,
-	},
-	{
-		path: "/*",
-		element: <ErrorPage />,
-		errorElement: <ErrorPage />,
-	},
-
 ];
 
 export default routes;
