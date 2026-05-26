@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import Product from "./components/Product";
+import "./components/styles/Shop.css";
 
 interface ProductProps {
 	id: number;
@@ -24,7 +25,9 @@ async function getAllItems(allItemsIDs: number[]): Promise<ProductProps[]> {
 	return Promise.all(allItemsIDs.map((id) => getItem(id)));
 }
 
-const IDS_TO_RENDER = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const IDS_TO_RENDER = [
+	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+];
 
 export default function Shop() {
 	const [items, setItems] = useState<ProductProps[] | null>(null);
@@ -43,13 +46,14 @@ export default function Shop() {
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
 	const itemsToRender = useMemo(
-		() => (selectedCategory ? (items?.filter((item) => item.category === selectedCategory) ?? null) : items),
+		() =>
+			selectedCategory
+				? (items?.filter((item) => item.category === selectedCategory) ?? null)
+				: items,
 		[items, selectedCategory],
 	);
 
-	function selectCategory(category: string): void {
-		setSelectedCategory(category);
-	}
+
 
 	const ITEM_CATEGORIES = Array.from(
 		new Set(items?.map((item) => item.category)),
@@ -57,11 +61,14 @@ export default function Shop() {
 
 	return (
 		<>
-			<div className="flex flex-row justify-around">
+			<div id="shop" className="flex flex-row justify-around">
+				<div key="all" className="category hover:text-gray-100">
+					<button onClick={() => setSelectedCategory(null)}>All</button>
+				</div>
 				{ITEM_CATEGORIES.map((category) => (
-					<div key={category}>
-						<button onClick={(e) => selectCategory(e.currentTarget.innerText)}>
-							{category}
+					<div key={category} className="category hover:text-gray-100">
+						<button onClick={() => setSelectedCategory(category)}>
+							{category[0].toUpperCase() + category.slice(1)}
 						</button>
 					</div>
 				))}

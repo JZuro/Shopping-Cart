@@ -6,21 +6,21 @@ import "./NavBar.css";
 export default function NavBar() {
 	return (
 		<>
-			<nav id="navBar">
+			<nav id="navBar" className="flex justify-evenly">
 				<NavLink to="/">
-					<div className="flex flex-row justify-around items-bottom p-5 gap-2">
+					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:bg-gray-700">
 						<Home />
 						<h2 className="mx-0">Home</h2>
 					</div>
 				</NavLink>
 				<NavLink to="/shop">
-					<div className="flex flex-row justify-around items-bottom p-5 gap-2">
+					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:bg-gray-700">
 						<Store />
 						<h2 className="mx-0">Shop</h2>
 					</div>
 				</NavLink>
 				<NavLink to="/cart">
-					<div className="flex flex-row justify-around items-bottom p-5 gap-2">
+					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:bg-gray-700">
 						<ShoppingCart />
 						<h2 className="mx-0">Cart</h2>
 					</div>

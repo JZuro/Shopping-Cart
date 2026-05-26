@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --color-mint-500: oklch(0.72 0.11 178);
-}
 
 :root {
   --text: #6b6375;
@@ -97,9 +94,8 @@ p {
   margin: 0;
 }
 
-a.active {
-  color: rgb(255, 94, 0);
-}
-a.pending {
-  color: blue;
+/* prevent scrollbar from disappearing */
+html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
 }
