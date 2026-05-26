@@ -96,3 +96,10 @@ h2 {
 p {
   margin: 0;
 }
+
+a.active {
+  color: rgb(255, 94, 0);
+}
+a.pending {
+  color: blue;
+}

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Product from "./components/Product";
-
 
 interface ProductProps {
 	id: number;
@@ -16,10 +15,11 @@ interface ProductProps {
 }
 
 async function getItem(itemID: number): Promise<ProductProps> {
-	return fetch(`https://fakestoreapi.com/products/${itemID}`).then(
-		(response) => response.json(),
+	return fetch(`https://fakestoreapi.com/products/${itemID}`).then((response) =>
+		response.json(),
 	);
 }
+
 async function getAllItems(allItemsIDs: number[]): Promise<ProductProps[]> {
 	return Promise.all(allItemsIDs.map((id) => getItem(id)));
 }
@@ -27,22 +27,12 @@ async function getAllItems(allItemsIDs: number[]): Promise<ProductProps[]> {
 const IDS_TO_RENDER = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export default function Shop() {
-	const [itemsToRender, setitemsToRender] = useState<ProductProps[] | null>(
-		null,
-	);
-
-	function selectCategory(category: string): void {
-		setitemsToRender(
-			(previous) =>
-				previous?.filter((item) => item.category === category) ?? null,
-		);
-	}
-
+	const [items, setItems] = useState<ProductProps[] | null>(null);
 	useEffect(() => {
 		let ignore = false;
 		getAllItems(IDS_TO_RENDER).then((result) => {
 			if (!ignore) {
-				setitemsToRender(result);
+				setItems(result);
 			}
 		});
 		return () => {
@@ -50,16 +40,38 @@ export default function Shop() {
 		};
 	}, []);
 
+	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+	const itemsToRender = useMemo(
+		() => (selectedCategory ? (items?.filter((item) => item.category === selectedCategory) ?? null) : items),
+		[items, selectedCategory],
+	);
+
+	function selectCategory(category: string): void {
+		setSelectedCategory(category);
+	}
+
+	const ITEM_CATEGORIES = Array.from(
+		new Set(items?.map((item) => item.category)),
+	);
+
 	return (
 		<>
-			<p>Shop</p>
-			<button onClick={(e) => selectCategory(e.currentTarget.innerText)}>
-				men's clothing
-			</button>
+			<div className="flex flex-row justify-around">
+				{ITEM_CATEGORIES.map((category) => (
+					<div key={category}>
+						<button onClick={(e) => selectCategory(e.currentTarget.innerText)}>
+							{category}
+						</button>
+					</div>
+				))}
+			</div>
 
-			{itemsToRender?.map((item) => (
-				<Product key={item.id} {...item} />
-			))}
+			<div className="products p-15 grid grid-cols-3 gap-10">
+				{itemsToRender?.map((item) => (
+					<Product key={item.id} {...item} />
+				))}
+			</div>
 		</>
 	);
 }

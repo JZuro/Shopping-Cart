@@ -1,3 +1,5 @@
+import mock from "../assets/mock.jpg"
+
 type ProductProps = {
 	id: number;
 	title: string;
@@ -23,12 +25,14 @@ export default function Product({
 }: ProductProps) {
 	return (
 		<>
-			<div className={`product ${category}`} id={String(id)}>
-				<h2>{title}</h2>
-				<h3>${price}</h3>
-				<p>{description}</p>
-				<p>{rate}/5.00 ({count})</p>
-
+			<div className={`product ${category} flex flex-col`} id={String(id)}>
+				<img src={mock} />
+				<h2 className="pt-5">{title}</h2>
+				<p className="text-xs">
+					{rate}/5.00 ({count} reviews)
+				</p>
+				<h3 className="text-lg">${price.toFixed(2)}</h3>
+				<p hidden>{description}</p>
 			</div>
 		</>
 	);
