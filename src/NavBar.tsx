@@ -8,21 +8,21 @@ export default function NavBar() {
 		<>
 			<nav id="navBar" className="flex justify-evenly">
 				<NavLink to="/">
-					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:bg-gray-700">
+					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:underline underline-offset-10 hover:decoration-white">
 						<Home />
-						<h2 className="mx-0">Home</h2>
+						<h2>Home</h2>
 					</div>
 				</NavLink>
 				<NavLink to="/shop">
-					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:bg-gray-700">
+					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:underline underline-offset-10 hover:decoration-white">
 						<Store />
-						<h2 className="mx-0">Shop</h2>
+						<h2>Shop</h2>
 					</div>
 				</NavLink>
 				<NavLink to="/cart">
-					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:bg-gray-700">
+					<div className="nav flex justify-center items-bottom p-5 gap-2 hover:underline underline-offset-10 hover:decoration-white">
 						<ShoppingCart />
-						<h2 className="mx-0">Cart</h2>
+						<h2>Cart</h2>
 					</div>
 				</NavLink>
 			</nav>

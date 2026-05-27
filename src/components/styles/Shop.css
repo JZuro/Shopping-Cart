@@ -9,6 +9,11 @@
 	}
 }
 
+#categories {
+    animation: fade-in 0.5s
+}
+
 .product {
 	animation: fade-in 0.5s;
 }
+
