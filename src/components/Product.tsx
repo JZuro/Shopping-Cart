@@ -1,32 +1,27 @@
-import mock from "../assets/mock.jpg"
+import type { Product } from "../types";
 
-type ProductProps = {
-	id: number;
-	title: string;
-	price: number;
-	category: string;
-	description: string;
-	rating: {
-    rate: number
-    count: number
-}
-};
+type ProductProps = Product & { onDetailsClick: () => void };
 
 export default function Product({
 	id,
 	title,
 	price,
-	category,
 	description,
-	rating:{
-		rate, 
-		count
-	},
+	category,
+	image,
+	rating: { rate, count },
+	onDetailsClick,
 }: ProductProps) {
 	return (
 		<>
-			<div className={`product ${category} flex flex-col`} id={String(id)}>
-				<img src={mock} />
+			<div
+				className={`product ${category} flex flex-col`}
+				id={String(id)}
+				onClick={onDetailsClick}
+			>
+				<div className="flex object-contain justify-center align-center bg-white">
+					<img src={image} className="p-10 h-65 object-contain" />
+				</div>
 				<h2 className="pt-5">{title}</h2>
 				<p className="text-xs">
 					{rate}/5.00 ({count} reviews)

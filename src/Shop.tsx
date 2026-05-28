@@ -1,55 +1,29 @@
 import { useEffect, useState, useMemo } from "react";
-import Product from "./components/Product";
+import type { Product } from "./types";
+import ProductCard from "./components/Product";
 import "./components/styles/Shop.css";
-
-// --- Types ---
-
-interface ProductProps {
-	id: number;
-	title: string;
-	price: number;
-	description: string;
-	category: string;
-	image: string;
-	rating: {
-		rate: number;
-		count: number;
-	};
-}
-
-// --- Config ---
-
-const IDS_TO_RENDER = [
-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
-];
 
 // --- Hook ---
 
 function useShopItems() {
-	const [items, setItems] = useState<ProductProps[] | null>(null);
+	const [items, setItems] = useState<Product[] | null>(() => {
+		const cached = localStorage.getItem("shopItems");
+		return cached ? JSON.parse(cached) : null;
+	});
 
 	useEffect(() => {
 		let ignore = false;
 
 		const fetchItems = async () => {
-			const responses = await Promise.all(
-				IDS_TO_RENDER.map((id) =>
-					fetch(`https://fakestoreapi.com/products/${id}`).then((r) => {
-						if (r.status >= 400) {
-							throw new Error(`${r.status}`);
-						} else {
-							return r.json();
-						}
-					}),
-				),
-			);
-
-			if (!ignore) setItems(responses);
+			const r = await fetch("https://fakestoreapi.com/products");
+			if (r.status >= 400) throw new Error(`${r.status}`);
+			const result: Product[] = await r.json();
+			localStorage.setItem("shopItems", JSON.stringify(result));
+			if (!ignore) setItems(result);
 		};
 
-		fetchItems().catch((error) => {
-            console.error(error);
-            if (!ignore) setItems([])});
+		fetchItems().catch((reason) => console.error(reason));
+
 		return () => {
 			ignore = true;
 		};
@@ -58,11 +32,48 @@ function useShopItems() {
 	return items;
 }
 
+// --- ProductDetails ---
+
+function ProductDetails({
+	product,
+	setSelectedProduct,
+}: {
+	product: Product | null;
+	setSelectedProduct: (p: Product | null) => void;
+}): React.ReactElement {
+	return (
+		<div
+			className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+			onClick={() => setSelectedProduct(null)}
+		>
+			<div
+				className="bg-white text-black rounded-xl p-8 max-w-lg w-full mx-4 flex flex-col gap-4"
+				onClick={(e) => e.stopPropagation()}
+			>
+				<button
+					className="self-end text-gray-500 hover:text-black"
+					onClick={() => setSelectedProduct(null)}
+				>
+					✕
+				</button>
+				<img src={product?.image} className="h-48 object-contain" />
+				<h2 className="text-black text-lg font-bold">{product?.title}</h2>
+				<p className="text-sm text-gray-500">
+					{product?.rating?.rate}/5.00 ({product?.rating?.count} reviews)
+				</p>
+				<p className="text-xl font-semibold">${product?.price.toFixed(2)}</p>
+				<p className="text-sm">{product?.description}</p>
+			</div>
+		</div>
+	);
+}
+
 // --- Component ---
 
 export default function Shop() {
 	const items = useShopItems();
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+	const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
 	const itemsToRender = useMemo(
 		() =>
@@ -72,14 +83,23 @@ export default function Shop() {
 		[items, selectedCategory],
 	);
 
-	const ITEM_CATEGORIES = Array.from(
-		new Set(items?.map((item) => item.category)),
-	).toSorted();
+	const ITEM_CATEGORIES = useMemo(
+		() => Array.from(new Set(items?.map((item) => item.category))).toSorted(),
+		[items],
+	);
 
 	if (!items) return <div>Loading...</div>;
 
 	return (
 		<>
+			{/* PRODUCT DETAIL OVERLAY */}
+			{selectedProduct && (
+				<ProductDetails
+					product={selectedProduct}
+					setSelectedProduct={setSelectedProduct}
+				/>
+			)}
+
 			{/* CATEGORIES */}
 			<div
 				id="categories"
@@ -96,10 +116,15 @@ export default function Shop() {
 					</div>
 				))}
 			</div>
+
 			{/* RENDERED PRODUCTS */}
 			<div className="products p-15 grid grid-cols-1 gap-10 md:grid-cols-3">
 				{itemsToRender?.map((item) => (
-					<Product key={item.id} {...item} />
+					<ProductCard
+						key={item.id}
+						{...item}
+						onDetailsClick={() => setSelectedProduct(item)}
+					/>
 				))}
 			</div>
 		</>
