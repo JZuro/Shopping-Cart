@@ -1,4 +1,4 @@
-import App from "./App";
+import HomePage from "./App";
 import Shop from "./Shop";
 import Cart from "./Cart";
 import ErrorPage from "./ErrorPage";
@@ -8,7 +8,7 @@ const routes = [
 	{
 		element: <Layout />,
 		children: [
-			{ path: "/", element: <App /> },
+			{ path: "/", element: <HomePage /> },
 			{ path: "/shop", element: <Shop /> },
 			{ path: "/cart", element: <Cart /> },
 			{ path: "/*", element: <ErrorPage />, errorElement: <ErrorPage /> },

@@ -1,12 +1,14 @@
-import { useEffect, useState, useMemo } from "react";
-import type { Product } from "./types";
+import { useEffect, useState, useMemo, useContext } from "react";
+import type { ProductData } from "./types";
 import ProductCard from "./components/Product";
 import "./components/styles/Shop.css";
+import { CartContext } from "./Contexts";
+
 
 // --- Hook ---
 
 function useShopItems() {
-	const [items, setItems] = useState<Product[] | null>(() => {
+	const [items, setItems] = useState<ProductData[] | null>(() => {
 		const cached = localStorage.getItem("shopItems");
 		return cached ? JSON.parse(cached) : null;
 	});
@@ -17,7 +19,7 @@ function useShopItems() {
 		const fetchItems = async () => {
 			const r = await fetch("https://fakestoreapi.com/products");
 			if (r.status >= 400) throw new Error(`${r.status}`);
-			const result: Product[] = await r.json();
+			const result: ProductData[] = await r.json();
 			localStorage.setItem("shopItems", JSON.stringify(result));
 			if (!ignore) setItems(result);
 		};
@@ -38,8 +40,8 @@ function ProductDetails({
 	product,
 	setSelectedProduct,
 }: {
-	product: Product | null;
-	setSelectedProduct: (p: Product | null) => void;
+	product: ProductData | null;
+	setSelectedProduct: (p: ProductData | null) => void;
 }): React.ReactElement {
 	return (
 		<div
@@ -71,9 +73,13 @@ function ProductDetails({
 // --- Component ---
 
 export default function Shop() {
+
+    const { cartItems, addToCart } = useContext(CartContext);
+
+    
 	const items = useShopItems();
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-	const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+	const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(null);
 
 	const itemsToRender = useMemo(
 		() =>
@@ -120,11 +126,14 @@ export default function Shop() {
 			{/* RENDERED PRODUCTS */}
 			<div className="products p-15 grid grid-cols-1 gap-10 md:grid-cols-3">
 				{itemsToRender?.map((item) => (
-					<ProductCard
-						key={item.id}
-						{...item}
-						onDetailsClick={() => setSelectedProduct(item)}
-					/>
+					<div>
+						<ProductCard
+							key={item.id}
+							{...item}
+							onDetailsClick={() => setSelectedProduct(item)}
+						/>
+						<button onClick={()=>addToCart(item)}>ADD TO CART</button>
+					</div>
 				))}
 			</div>
 		</>

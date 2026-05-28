@@ -2,7 +2,7 @@ import type { Product } from "../types";
 
 type ProductProps = Product & { onDetailsClick: () => void };
 
-export default function Product({
+export default function ProductCard({
 	id,
 	title,
 	price,
