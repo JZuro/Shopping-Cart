@@ -75,21 +75,24 @@ export default function Shop() {
 	const { cartItems, addToCart } = useContext(CartContext);
 
 	const items = useShopItems();
-	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+	const [selectedCategory, setSelectedCategory] = useState<string | null>("All");
 	const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(null);
 
 	const itemsToRender = useMemo(
 		() =>
-			selectedCategory
-				? (items?.filter((item) => item.category === selectedCategory) ?? null)
-				: items,
+			selectedCategory == "All"
+				? items
+				: items?.filter((item) => item.category === selectedCategory),
 		[items, selectedCategory]
 	);
 
-	const ITEM_CATEGORIES = useMemo(
-		() => Array.from(new Set(items?.map((item) => item.category))).toSorted(),
-		[items]
-	);
+	const ITEM_CATEGORIES = useMemo(() => {
+		const item_categories = Array.from(
+			new Set(items?.map((item) => item.category))
+		).toSorted();
+		item_categories.unshift("All");
+		return item_categories;
+	}, [items]);
 
 	if (!items) return <div>Loading...</div>;
 
@@ -108,12 +111,12 @@ export default function Shop() {
 				id="categories"
 				className="flex flex-col md:flex-row text-xl md:text-base mt-5 p-1 justify-around align-center md:gap-10"
 			>
-				<div key="all" className="category hover:text-gray-100">
-					<button onClick={() => setSelectedCategory(null)}>All</button>
-				</div>
 				{ITEM_CATEGORIES.map((category) => (
-					<div key={category} className="category hover:text-gray-100">
-						<button onClick={() => setSelectedCategory(category)}>
+					<div key={category} className={"category hover:text-gray-100"}>
+						<button
+							className={`${category == selectedCategory && "text-orange-500"}`}
+							onClick={() => setSelectedCategory(category)}
+						>
 							{category[0].toUpperCase() + category.slice(1)}
 						</button>
 					</div>
@@ -123,12 +126,12 @@ export default function Shop() {
 			{/* RENDERED PRODUCTS */}
 			<div className="products p-15 grid grid-cols-1 gap-10 md:grid-cols-3">
 				{itemsToRender?.map((item) => (
-						<ProductCard
-							key={item.id}
-							{...item}
-							onDetailsClick={() => setSelectedProduct(item)}
-							onAddToCart={() => addToCart(item)}
-						/>
+					<ProductCard
+						key={item.id}
+						{...item}
+						onDetailsClick={() => setSelectedProduct(item)}
+						onAddToCart={() => addToCart(item)}
+					/>
 				))}
 			</div>
 		</>
