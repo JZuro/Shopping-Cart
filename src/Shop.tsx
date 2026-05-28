@@ -4,7 +4,6 @@ import ProductCard from "./components/Product";
 import "./components/styles/Shop.css";
 import { CartContext } from "./Contexts";
 
-
 // --- Hook ---
 
 function useShopItems() {
@@ -73,10 +72,8 @@ function ProductDetails({
 // --- Component ---
 
 export default function Shop() {
+	const { cartItems, addToCart } = useContext(CartContext);
 
-    const { cartItems, addToCart } = useContext(CartContext);
-
-    
 	const items = useShopItems();
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(null);
@@ -86,12 +83,12 @@ export default function Shop() {
 			selectedCategory
 				? (items?.filter((item) => item.category === selectedCategory) ?? null)
 				: items,
-		[items, selectedCategory],
+		[items, selectedCategory]
 	);
 
 	const ITEM_CATEGORIES = useMemo(
 		() => Array.from(new Set(items?.map((item) => item.category))).toSorted(),
-		[items],
+		[items]
 	);
 
 	if (!items) return <div>Loading...</div>;
@@ -126,14 +123,12 @@ export default function Shop() {
 			{/* RENDERED PRODUCTS */}
 			<div className="products p-15 grid grid-cols-1 gap-10 md:grid-cols-3">
 				{itemsToRender?.map((item) => (
-					<div>
 						<ProductCard
 							key={item.id}
 							{...item}
 							onDetailsClick={() => setSelectedProduct(item)}
+							onAddToCart={() => addToCart(item)}
 						/>
-						<button onClick={()=>addToCart(item)}>ADD TO CART</button>
-					</div>
 				))}
 			</div>
 		</>

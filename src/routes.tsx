@@ -2,11 +2,11 @@ import HomePage from "./App";
 import Shop from "./Shop";
 import Cart from "./Cart";
 import ErrorPage from "./ErrorPage";
-import Layout from "./Layout";
+import App from "./Layout";
 
 const routes = [
 	{
-		element: <Layout />,
+		element: <App />,
 		children: [
 			{ path: "/", element: <HomePage /> },
 			{ path: "/shop", element: <Shop /> },
