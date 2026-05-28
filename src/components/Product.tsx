@@ -22,7 +22,7 @@ export default function ProductCard({
 	const [hover, setHover] = useState(false);
 	return (
 		<div
-			className={`product flex flex-col justify-between`}
+			className="product flex flex-col"
 			id={String(id)}
 			onClick={onDetailsClick}
 		>
@@ -47,11 +47,15 @@ export default function ProductCard({
 					<span className="px-5 whitespace-nowrap">ADD TO CART</span>
 				</button>
 			</div>
-			<h2 className="pt-5 text-center text-pretty ">{title}</h2>
-			<p className="text-xs">
-				{rate}/5.00 ({count} reviews)
-			</p>
-			<h3 className="text-lg">${price.toFixed(2)}</h3>
+			<div className="pt-5 flex flex-col justify-between flex-1">
+                <h2 className="mb-5">{title}</h2>
+                <div>
+                    <p className="text-xs">
+                        {rate}/5.00 ({count} reviews)
+                    <h3 className="text-lg">${price.toFixed(2)}</h3>
+                    </p>
+                </div>
+            </div>
 		</div>
 	);
 }
