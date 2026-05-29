@@ -17,7 +17,7 @@ export default function Cart() {
 							<th className="pb-2 w-0" />
 							<th className="pb-2 w-35" />
 							<th className="pb-2 text-center font-normal px-6">Product</th>
-							<th className="pb-2 text-center font-normal px-6">Price</th>
+							<th className="pb-2 text-right font-normal px-9">Price</th>
 							<th className="pb-2 text-center font-normal px-6">Qty.</th>
 							<th className="pb-2 text-right font-normal px-6">Subtotal</th>
 						</tr>
@@ -46,7 +46,7 @@ export default function Cart() {
 										{item.category}
 									</span>
 								</td>
-								<td className="py-5 px-6 text-center font-light">
+								<td className="py-5 px-6 text-right font-light">
 									${item.price.toFixed(2)}
 								</td>
 								<td className="py-5 px-6">
