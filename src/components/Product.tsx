@@ -12,8 +12,8 @@ export default function ProductCard({
 	id,
 	title,
 	price,
-	description,
-	category,
+	// description,
+	// category,
 	image,
 	rating: { rate, count },
 	onDetailsClick,
@@ -21,11 +21,7 @@ export default function ProductCard({
 }: ProductProps) {
 	const [hover, setHover] = useState(false);
 	return (
-		<div
-			className="product flex flex-col"
-			id={String(id)}
-			onClick={onDetailsClick}
-		>
+		<div className="product flex flex-col" id={String(id)} onClick={onDetailsClick}>
 			<div className="relative flex justify-center bg-white">
 				<img
 					src={image}
@@ -48,14 +44,14 @@ export default function ProductCard({
 				</button>
 			</div>
 			<div className="pt-5 flex flex-col justify-between flex-1">
-                <h2 className="mb-5">{title}</h2>
-                <div>
-                    <p className="text-xs">
-                        {rate}/5.00 ({count} reviews)
-                    <h3 className="text-lg">${price.toFixed(2)}</h3>
-                    </p>
-                </div>
-            </div>
+				<h2 className="mb-5">{title}</h2>
+				<div>
+					<p className="text-xs">
+						{rate}/5.00 ({count} reviews)
+						<h3 className="text-lg">${price.toFixed(2)}</h3>
+					</p>
+				</div>
+			</div>
 		</div>
 	);
 }

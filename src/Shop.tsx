@@ -9,7 +9,8 @@ import { CartContext } from "./Contexts";
 function useShopItems() {
 	const [items, setItems] = useState<ProductData[] | null>(() => {
 		const cached = localStorage.getItem("shopItems");
-		return cached ? JSON.parse(cached) : null;
+		const parsed = cached ? JSON.parse(cached) : null;
+		return Array.isArray(parsed) ? parsed : null;
 	});
 
 	useEffect(() => {
@@ -75,12 +76,12 @@ export default function Shop() {
 	const { cartItems, addToCart } = useContext(CartContext);
 
 	const items = useShopItems();
-	const [selectedCategory, setSelectedCategory] = useState<string | null>("All");
+	const [selectedCategory, setSelectedCategory] = useState<string | null>("all");
 	const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(null);
 
 	const itemsToRender = useMemo(
 		() =>
-			selectedCategory == "All"
+			selectedCategory == "all"
 				? items
 				: items?.filter((item) => item.category === selectedCategory),
 		[items, selectedCategory]
@@ -90,7 +91,7 @@ export default function Shop() {
 		const item_categories = Array.from(
 			new Set(items?.map((item) => item.category))
 		).toSorted();
-		item_categories.unshift("All");
+		item_categories.unshift("all");
 		return item_categories;
 	}, [items]);
 
@@ -114,10 +115,10 @@ export default function Shop() {
 				{ITEM_CATEGORIES.map((category) => (
 					<div key={category} className={"category hover:text-gray-100"}>
 						<button
-							className={`${category == selectedCategory && "text-orange-500"}`}
+							className={`capitalize ${category == selectedCategory && "text-orange-500"}`}
 							onClick={() => setSelectedCategory(category)}
 						>
-							{category[0].toUpperCase() + category.slice(1)}
+							{category}
 						</button>
 					</div>
 				))}

@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { CartContext } from "./Contexts";
 
 export default function NavBar() {
-	const { cartItems } = useContext(CartContext);
+	const  cartItems  = useContext(CartContext);
 	return (
 		<>
 			<nav id="navBar" className="flex">
@@ -34,9 +34,9 @@ export default function NavBar() {
 							</span>
 							<span
 								id="counter"
-								className={`ml-3 border-2 rounded-sm h-8 w-6 ${cartItems.length === 0 && "opacity-0"}`}
+								className={`ml-3 border-2 rounded-sm h-8 w-6 ${cartItems.itemsTotal === 0 && "opacity-0"}`}
 							>
-								{`${cartItems.length}`}
+								{`${cartItems.itemsTotal}`}
 							</span>
 						</NavLink>
 					</li>
