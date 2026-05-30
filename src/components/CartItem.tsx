@@ -1,10 +1,19 @@
+import { useContext } from "react";
 import type { cartItemData } from "../types.ts";
 import { X } from "lucide-react";
+import { CartContext } from "../Contexts.ts";
 
 export default function CartItem({ item }: { item: cartItemData }) {
+	const {
+		// cartItems,
+		// priceTotal,
+		addToCart,
+		decreaseQuantity,
+		removeFromCart,
+	} = useContext(CartContext);
 	return (
-		<tr key={item.id} className="border-b last:border-b-0">
-			<td className="py-5">
+		<tr key={item.id} className="border-b border-dotted last:border-b-0">
+			<td className="py-4">
 				<button
 					onClick={() => removeFromCart(item.id)}
 					className="hover:text-gray-100 cursor-pointer p-5"
@@ -12,15 +21,15 @@ export default function CartItem({ item }: { item: cartItemData }) {
 					<X size={18} />
 				</button>
 			</td>
-			<td className="py-5">
-				<div className="bg-white p-3 w-35 h-35 flex items-center justify-center">
+			<td className="py-4">
+				<div className="bg-white p-3 w-35 h-35 items-center justify-center">
 					<img
 						src={item.image}
 						className="w-full h-full object-contain"
 					/>
 				</div>
 			</td>
-			<td className="py-5 px-6 max-w-60">
+			<td className="py-4 px-6 max-w-60">
 				<span className="block text-sm font-medium truncate">
 					{item.title}
 				</span>
@@ -28,10 +37,10 @@ export default function CartItem({ item }: { item: cartItemData }) {
 					{item.category}
 				</span>
 			</td>
-			<td className="py-5 px-6 text-right text-sm font-light">
+			<td className="py-4 px-6  text-sm font-light">
 				${item.price.toFixed(2)}
 			</td>
-			<td className="py-5 px-6">
+			<td className="py-4 px-6">
 				<div className="flex justify-center items-center gap-2">
 					<button
 						onClick={() => decreaseQuantity(item.id)}
@@ -50,7 +59,7 @@ export default function CartItem({ item }: { item: cartItemData }) {
 					</button>
 				</div>
 			</td>
-			<td className="py-5 px-6 text-right text-md font-light">
+			<td className="py-5 px-6  text-md font-light">
 				${(item.price * item.quantity).toFixed(2)}
 			</td>
 		</tr>

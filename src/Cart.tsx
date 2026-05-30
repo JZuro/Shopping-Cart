@@ -6,38 +6,30 @@ export default function Cart() {
 	const {
 		cartItems,
 		priceTotal,
-		addToCart,
-		decreaseQuantity,
-		removeFromCart,
+		// addToCart,
+		// decreaseQuantity,
+		// removeFromCart,
 	} = useContext(CartContext);
 
 	return (
-		<div className="my-5 px-4">
+		<div className="my-5 mb-15 px-15">
 			{cartItems.length === 0 ? (
 				<p className="py-5 text-center">Your cart is empty.</p>
 			) : (
 				<table className="w-full border-collapse">
-					<thead>
+					<thead className="table-header-group">
 						<tr className="text-sm text-gray-400 border-b-2">
-							<th className="pb-2 w-0" />
-							<th className="pb-2 w-35" />
-							<th className="pb-2 text-center font-lg px-6">
-								Product
-							</th>
-							<th className="pb-2 text-right font-lg px-9">
-								Price
-							</th>
-							<th className="pb-2 text-center font-lg px-6">
-								Qty.
-							</th>
-							<th className="pb-2 text-right font-lg px-6">
-								Subtotal
-							</th>
+							<th />
+							<th />
+							<th>Product</th>
+							<th className="">Price</th>
+							<th>Qty.</th>
+							<th className="">Subtotal</th>
 						</tr>
 					</thead>
 					<tbody>
 						{cartItems.map((item) => (
-							<CartItem item={item}/>
+							<CartItem item={item} />
 						))}
 					</tbody>
 					<tfoot>
