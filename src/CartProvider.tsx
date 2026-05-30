@@ -1,10 +1,10 @@
 import { CartContext } from "./Contexts";
 import { useState, useEffect, useRef } from "react";
 import type { ReactNode } from "react";
-import type { ProductData, CartItem } from "./types";
+import type { productData, cartItemData } from "./types";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-	const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+	const [cartItems, setCartItems] = useState<cartItemData[]>(() => {
 		const cached = localStorage.getItem("cartItems");
 		return cached ? JSON.parse(cached) : [];
 	});
@@ -28,7 +28,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		});
 	};
 
-	const addToCart = (item: ProductData) => {
+	const addToCart = (item: productData) => {
 		setCartItems((prev) => {
 			const itemExists = prev.find((i) => i.id === item.id);
 			if (itemExists) {

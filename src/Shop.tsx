@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useContext } from "react";
-import type { ProductData } from "./types";
+import type { productData } from "./types";
 import ProductCard from "./components/Product";
 import "./components/styles/Shop.css";
 import { CartContext } from "./Contexts";
@@ -7,7 +7,7 @@ import { CartContext } from "./Contexts";
 // --- Hook ---
 
 function useShopItems() {
-	const [items, setItems] = useState<ProductData[] | null>(() => {
+	const [items, setItems] = useState<productData[] | null>(() => {
 		const cached = localStorage.getItem("shopItems");
 		const parsed = cached ? JSON.parse(cached) : null;
 		return Array.isArray(parsed) ? parsed : null;
@@ -19,7 +19,7 @@ function useShopItems() {
 		const fetchItems = async () => {
 			const r = await fetch("https://fakestoreapi.com/products");
 			if (r.status >= 400) throw new Error(`${r.status}`);
-			const result: ProductData[] = await r.json();
+			const result: productData[] = await r.json();
 			localStorage.setItem("shopItems", JSON.stringify(result));
 			if (!ignore) setItems(result);
 		};
@@ -40,8 +40,8 @@ function ProductDetails({
 	product,
 	setSelectedProduct,
 }: {
-	product: ProductData | null;
-	setSelectedProduct: (p: ProductData | null) => void;
+	product: productData | null;
+	setSelectedProduct: (p: productData | null) => void;
 }): React.ReactElement {
 	return (
 		<div
@@ -77,7 +77,7 @@ export default function Shop() {
 
 	const items = useShopItems();
 	const [selectedCategory, setSelectedCategory] = useState<string | null>("all");
-	const [selectedProduct, setSelectedProduct] = useState<ProductData | null>(null);
+	const [selectedProduct, setSelectedProduct] = useState<productData | null>(null);
 
 	const itemsToRender = useMemo(
 		() =>

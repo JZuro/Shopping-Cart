@@ -1,9 +1,9 @@
 import { useState } from "react";
 import mock from "../assets/mock.jpg";
-import type { ProductData } from "../types";
+import type { productData } from "../types";
 import { Plus } from "lucide-react";
 
-type ProductProps = ProductData & {
+type ProductProps = productData & {
 	onDetailsClick: () => void;
 	onAddToCart: () => void;
 };

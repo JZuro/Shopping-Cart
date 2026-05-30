@@ -1,4 +1,4 @@
-export interface ProductData {
+export interface productData {
 	id: number;
 	title: string;
 	price: number;
@@ -11,6 +11,6 @@ export interface ProductData {
 	};
 }
 
-export interface CartItem extends ProductData{
+export interface cartItemData extends productData{
     quantity: number
 }
