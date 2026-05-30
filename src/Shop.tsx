@@ -22,6 +22,12 @@ function useShopItems() {
 			const result: productData[] = await r.json();
 			localStorage.setItem("shopItems", JSON.stringify(result));
 			if (!ignore) setItems(result);
+			
+			items?.forEach((item) => {
+				const img = new Image();
+				img.src = item.image;
+			});
+			
 		};
 
 		fetchItems().catch((reason) => console.error(reason));

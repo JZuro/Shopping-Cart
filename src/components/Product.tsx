@@ -27,7 +27,7 @@ export default function ProductCard({
 					src={image}
 					className="p-15 h-70 object-contain"
 					onError={(e) => (e.currentTarget.src = mock)}
-				/>
+				/> 
 				<button
 					onMouseEnter={() => setHover(true)}
 					onMouseLeave={() => setHover(false)}
