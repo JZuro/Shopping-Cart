@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useContext } from "react";
 import type { productData } from "./types";
-import ProductCard from "./components/Product";
+import ProductCard from "./components/ProductCard";
 import "./components/styles/Shop.css";
 import { CartContext } from "./Contexts";
 
@@ -22,7 +22,7 @@ function useShopItems() {
 			const result: productData[] = await r.json();
 			localStorage.setItem("shopItems", JSON.stringify(result));
 			if (!ignore) setItems(result);
-			
+
 			items?.forEach((item) => {
 				const img = new Image();
 				img.src = item.image;
@@ -51,11 +51,11 @@ function ProductDetails({
 }): React.ReactElement {
 	return (
 		<div
-			className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+			className="fixed inset-0 z-50 flex align-center items-center justify-center bg-black/60"
 			onClick={() => setSelectedProduct(null)}
 		>
 			<div
-				className="bg-white text-black rounded-xl p-8 max-w-lg w-full mx-4 flex flex-col gap-4"
+				className="bg-(--details) text-(--text) rounded-xl p-8 max-w-lg w-full mx-4 flex flex-col items-center"
 				onClick={(e) => e.stopPropagation()}
 			>
 				<button
@@ -64,13 +64,13 @@ function ProductDetails({
 				>
 					✕
 				</button>
-				<img src={product?.image} className="h-48 object-contain" />
-				<h2 className="text-black text-lg font-bold">{product?.title}</h2>
+				<div className="flex justify-center items-center h-70 w-70 p-5 bg-white"><img src={product?.image} className="h-55 drop-shadow-lg object-contain" /></div>
+				<h2 className="pt-5 text-(--text-h) text-lg font-bold">{product?.title}</h2>
 				<p className="text-sm text-gray-500">
 					{product?.rating?.rate}/5.00 ({product?.rating?.count} reviews)
 				</p>
 				<p className="text-xl font-semibold">${product?.price.toFixed(2)}</p>
-				<p className="text-sm">{product?.description}</p>
+				<p className="h-40 flex text-sm overflow-y-scroll">{product?.description}</p>
 			</div>
 		</div>
 	);
@@ -79,7 +79,7 @@ function ProductDetails({
 // --- Component ---
 
 export default function Shop() {
-	const { cartItems, addToCart } = useContext(CartContext);
+	const { addToCart }  = useContext(CartContext);
 
 	const items = useShopItems();
 	const [selectedCategory, setSelectedCategory] = useState<string | null>("all");
@@ -116,12 +116,12 @@ export default function Shop() {
 			{/* CATEGORIES */}
 			<div
 				id="categories"
-				className="flex flex-col md:flex-row text-xl md:text-base mt-5 p-1 justify-around align-center md:gap-10"
+				className="flex flex-col md:flex-row text-xl md:text-base mt-5 p-1 px-10 justify-around align-center md:gap-10"
 			>
 				{ITEM_CATEGORIES.map((category) => (
 					<div key={category} className={"category hover:text-gray-100"}>
 						<button
-							className={`capitalize ${category == selectedCategory && "text-orange-500"}`}
+							className={`capitalize ${category == selectedCategory && "active"}`}
 							onClick={() => setSelectedCategory(category)}
 						>
 							{category}
@@ -131,7 +131,7 @@ export default function Shop() {
 			</div>
 
 			{/* RENDERED PRODUCTS */}
-			<div className="products p-15 grid grid-cols-1 gap-10 md:grid-cols-3">
+			<div className="products p-5 md:p-15 grid grid-cols-1 gap-6 md:gap-10 sm:grid-cols-2 md:grid-cols-3">
 				{itemsToRender?.map((item) => (
 					<ProductCard
 						key={item.id}

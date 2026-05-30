@@ -1,13 +1,3 @@
-
-
-#navBar > *{
-    flex: 1 1 0;
-    text-decoration-skip-ink:auto;
-}
-
-a.active {
-  color: rgb(255, 94, 0);
-}
 svg {
     display: block;
 }

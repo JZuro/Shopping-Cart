@@ -21,13 +21,17 @@ export default function ProductCard({
 }: ProductProps) {
 	const [hover, setHover] = useState(false);
 	return (
-		<div className="product flex flex-col" id={String(id)} onClick={onDetailsClick}>
+		<div
+			className="product flex flex-col"
+			id={String(id)}
+			onClick={onDetailsClick}
+		>
 			<div className="relative flex justify-center bg-white">
 				<img
 					src={image}
-					className="p-15 h-70 object-contain"
+					className="drop-shadow-lg p-5 md:p-15 h-55 md:h-70 object-contain"
 					onError={(e) => (e.currentTarget.src = mock)}
-				/> 
+				/>
 				<button
 					onMouseEnter={() => setHover(true)}
 					onMouseLeave={() => setHover(false)}
@@ -44,12 +48,12 @@ export default function ProductCard({
 				</button>
 			</div>
 			<div className="pt-5 flex flex-col justify-between flex-1">
-				<h2 className="mb-5">{title}</h2>
-				<div>
-					<p className="text-xs">
+				<span className="mb-5">{title}</span>
+				<div className="flex flex-col">
+					<span className="text-xs">
 						{rate}/5.00 ({count} reviews)
-						<h3 className="text-lg">${price.toFixed(2)}</h3>
-					</p>
+					</span>
+					<span className="text-lg">${price.toFixed(2)}</span>
 				</div>
 			</div>
 		</div>
