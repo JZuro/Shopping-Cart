@@ -42,9 +42,11 @@ export default function ProductCard({
 					}}
 				>
 					<div className="size-14 flex items-center justify-center shrink-0">
-						<Plus />
+						<Plus color="var(--plus)" />
 					</div>
-					<span className="px-5 whitespace-nowrap">ADD TO CART</span>
+					<span className="text-(--plus) px-5 whitespace-nowrap">
+						ADD TO CART
+					</span>
 				</button>
 			</div>
 			<div className="pt-5 flex flex-col justify-between flex-1">
