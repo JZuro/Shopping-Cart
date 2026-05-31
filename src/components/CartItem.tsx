@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import type { cartItemData } from "../types.ts";
 import { X } from "lucide-react";
-import { CartContext } from "../Contexts.ts";
+import { CartContext } from "../context/CartContext";
 
 export default function CartItem({ item }: { item: cartItemData }) {
 	const {

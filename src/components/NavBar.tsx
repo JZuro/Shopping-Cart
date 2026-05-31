@@ -4,7 +4,7 @@ import { Home, Store, ShoppingCart, Menu, X as XIcon, Sun, Moon } from "lucide-r
 import "./NavBar.css";
 import { useContext } from "react";
 import { Link } from "react-router";
-import { CartContext } from "./Contexts";
+import { CartContext } from "../context/CartContext";
 
 export default function NavBar() {
 	const cartItems = useContext(CartContext);

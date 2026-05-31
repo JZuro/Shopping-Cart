@@ -1,14 +1,11 @@
-import { CartContext } from "./Contexts";
+import { CartContext } from "../context/CartContext";
 import { useContext } from "react";
-import CartItem from "./components/CartItem";
+import CartItem from "../components/CartItem";
 
 export default function Cart() {
 	const {
 		cartItems,
 		priceTotal,
-		// addToCart,
-		// decreaseQuantity,
-		// removeFromCart,
 	} = useContext(CartContext);
 
 	return (

@@ -1,46 +1,9 @@
-import { useEffect, useState, useMemo, useContext } from "react";
-import type { productData } from "./types";
-import ProductCard from "./components/ProductCard";
-import "./components/styles/Shop.css";
-import { CartContext } from "./Contexts";
-
-// --- Hook ---
-
-function useShopItems() {
-	const [items, setItems] = useState<productData[] | null>(() => {
-		const cached = localStorage.getItem("shopItems");
-		const parsed = cached ? JSON.parse(cached) : null;
-		return Array.isArray(parsed) ? parsed : null;
-	});
-
-	useEffect(() => {
-		let ignore = false;
-
-		const fetchItems = async () => {
-			const r = await fetch("https://fakestoreapi.com/products");
-			if (r.status >= 400) throw new Error(`${r.status}`);
-			const result: productData[] = await r.json();
-			localStorage.setItem("shopItems", JSON.stringify(result));
-			if (!ignore) setItems(result);
-
-			items?.forEach((item) => {
-				const img = new Image();
-				img.src = item.image;
-			});
-			
-		};
-
-		fetchItems().catch((reason) => console.error(reason));
-
-		return () => {
-			ignore = true;
-		};
-	}, []);
-
-	return items;
-}
-
-// --- ProductDetails ---
+import { useState, useMemo, useContext } from "react";
+import type { productData } from "../types";
+import ProductCard from "../components/ProductCard";
+import "./Shop.css";
+import { CartContext } from "../context/CartContext";
+import useShopItems from "../hooks/useShopItems";
 
 function ProductDetails({
 	product,
@@ -76,8 +39,6 @@ function ProductDetails({
 	);
 }
 
-// --- Component ---
-
 export default function Shop() {
 	const { addToCart }  = useContext(CartContext);
 
@@ -105,7 +66,6 @@ export default function Shop() {
 
 	return (
 		<>
-			{/* PRODUCT DETAIL OVERLAY */}
 			{selectedProduct && (
 				<ProductDetails
 					product={selectedProduct}
@@ -113,7 +73,6 @@ export default function Shop() {
 				/>
 			)}
 
-			{/* CATEGORIES */}
 			<div
 				id="categories"
 				className="flex flex-col md:flex-row text-xl md:text-base mt-5 p-1 px-10 justify-around align-center md:gap-10"
@@ -130,7 +89,6 @@ export default function Shop() {
 				))}
 			</div>
 
-			{/* RENDERED PRODUCTS */}
 			<div className="products p-5 md:p-15 grid grid-cols-1 gap-6 md:gap-10 sm:grid-cols-2 md:grid-cols-3">
 				{itemsToRender?.map((item) => (
 					<ProductCard

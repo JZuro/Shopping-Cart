@@ -1,4 +1,5 @@
-import mock from "./assets/mock.jpg";
+import mock from "../assets/mock.jpg";
+
 function HomePage() {
 	return (
 		<>
