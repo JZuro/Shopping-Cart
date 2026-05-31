@@ -9,6 +9,7 @@ import { CartContext } from "../context/CartContext";
 export default function NavBar() {
 	const cartItems = useContext(CartContext);
 	const [menuOpen, setMenuOpen] = useState(false);
+	const closeMenu = () => setMenuOpen(false);
 	const [dark, setDark] = useState<boolean>(() => {
 		const stored = localStorage.getItem("theme");
 		const isDark = stored === "dark" || (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -29,7 +30,7 @@ export default function NavBar() {
 						to="/"
 						id="logo"
 						className="bg-(--logo-bg) text-(--logo) p-6 text-xl font-medium md:order-1"
-						onClick={() => setMenuOpen(false)}
+						onClick={closeMenu}
 					>
 						<b>Lorem</b>|Ipsum
 					</Link>
@@ -59,7 +60,7 @@ export default function NavBar() {
 						<NavLink
 							to="/"
 							className="flex items-center gap-2 min-w-24"
-							onClick={() => setMenuOpen(false)}
+							onClick={closeMenu}
 						>
 							<Home />
 							<span className="">
@@ -71,7 +72,7 @@ export default function NavBar() {
 						<NavLink
 							to="/shop"
 							className="flex items-center gap-2 min-w-24"
-							onClick={() => setMenuOpen(false)}
+							onClick={closeMenu}
 						>
 							<Store />
 							<span className="">
@@ -83,7 +84,7 @@ export default function NavBar() {
 						<NavLink
 							to="/cart"
 							className="relative flex items-center gap-2 min-w-24"
-							onClick={() => setMenuOpen(false)}
+							onClick={closeMenu}
 						>
 							<ShoppingCart />
 							<span className="">

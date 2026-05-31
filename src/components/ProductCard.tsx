@@ -1,30 +1,40 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import mock from "../assets/mock.jpg";
 import type { productData } from "../types";
 import { Plus } from "lucide-react";
 
-type ProductProps = productData & {
-	onDetailsClick: () => void;
-	onAddToCart: () => void;
+type ProductProps = {
+	product: productData;
+	onDetailsClick: (item: productData) => void;
+	onAddToCart: (item: productData) => void;
 };
 
-export default function ProductCard({
-	id,
-	title,
-	price,
-	// description,
-	// category,
-	image,
-	rating: { rate, count },
-	onDetailsClick,
-	onAddToCart,
-}: ProductProps) {
-	const [hover, setHover] = useState(false);
+export default function ProductCard({ product, onDetailsClick, onAddToCart }: ProductProps) {
+	const { id, title, price, image, rating: { rate, count } } = product;
+	const [expanded, setExpanded] = useState(false);
+	const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const mouseInsideRef = useRef(false);
+
+	function scheduleCollapse() {
+		if (timerRef.current) clearTimeout(timerRef.current);
+		timerRef.current = setTimeout(() => {
+			timerRef.current = null;
+			if (!mouseInsideRef.current) setExpanded(false);
+		}, 4000);
+	}
+
 	return (
 		<div
 			className="product flex flex-col"
 			id={String(id)}
-			onClick={onDetailsClick}
+			onClick={() => onDetailsClick(product)}
+			onMouseLeave={() => {
+				mouseInsideRef.current = false;
+				if (timerRef.current === null) setExpanded(false);
+			}}
+			onMouseEnter={() => {
+				mouseInsideRef.current = true;
+			}}
 		>
 			<div className="relative flex justify-center bg-white">
 				<img
@@ -33,19 +43,19 @@ export default function ProductCard({
 					onError={(e) => (e.currentTarget.src = mock)}
 				/>
 				<button
-					onMouseEnter={() => setHover(true)}
-					onMouseLeave={() => setHover(false)}
-					className={`absolute justify-between bottom-0 right-0 flex flex-row-reverse items-center overflow-hidden bg-black cursor-pointer transition-[width] duration-200 ${hover ? "w-full" : "w-14"}`}
+					className={`absolute justify-between bottom-0 right-0 flex flex-row-reverse items-center overflow-hidden bg-black cursor-pointer transition-[width] duration-200  ${expanded ? "w-full" : "w-14"}`}
 					onClick={(e) => {
 						e.stopPropagation();
-						onAddToCart();
+						onAddToCart(product);
+						setExpanded(true);
+						scheduleCollapse();
 					}}
 				>
 					<div className="size-14 flex items-center justify-center shrink-0">
 						<Plus color="var(--plus)" />
 					</div>
 					<span className="text-(--plus) px-5 whitespace-nowrap">
-						ADD TO CART
+						ADDED TO CART
 					</span>
 				</button>
 			</div>

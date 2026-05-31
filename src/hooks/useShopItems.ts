@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import type { productData } from "../types";
 
+// Fetch products from the Fake Store API, 
+// cache them in localStorage, and pre-warm image cache on load.
+
 export default function useShopItems() {
 	const [items, setItems] = useState<productData[] | null>(() => {
 		const cached = localStorage.getItem("shopItems");
@@ -10,7 +13,6 @@ export default function useShopItems() {
 
 	useEffect(() => {
 		let ignore = false;
-
 		const fetchItems = async () => {
 			const r = await fetch("https://fakestoreapi.com/products");
 			if (r.status >= 400) throw new Error(`${r.status}`);
@@ -18,7 +20,7 @@ export default function useShopItems() {
 			localStorage.setItem("shopItems", JSON.stringify(result));
 			if (!ignore) setItems(result);
 
-			items?.forEach((item) => {
+			result.forEach((item) => {
 				const img = new Image();
 				img.src = item.image;
 			});
