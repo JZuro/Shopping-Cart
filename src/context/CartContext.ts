@@ -8,6 +8,7 @@ export const CartContext = createContext<{
 	removeFromCart: (id: number) => void;
 	priceTotal: number;
 	itemsTotal: number;
+	clearCart: () => void;
 }>({
 	cartItems: [],
 	addToCart: () => {},
@@ -15,4 +16,5 @@ export const CartContext = createContext<{
 	removeFromCart: () => {},
 	priceTotal: 0,
 	itemsTotal: 0,
+	clearCart: () => {},
 });

@@ -49,6 +49,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 	);
 	const itemsTotal = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 	
+	const clearCart = () => setCartItems([]);
 	
 	return (
 		<CartContext.Provider
@@ -59,6 +60,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 				removeFromCart,
 				priceTotal,
 				itemsTotal,
+				clearCart,
 			}}
 		>
 			{children}

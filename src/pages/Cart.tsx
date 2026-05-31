@@ -6,6 +6,7 @@ export default function Cart() {
 	const {
 		cartItems,
 		priceTotal,
+		clearCart,
 	} = useContext(CartContext);
 
 	return (
@@ -41,7 +42,7 @@ export default function Cart() {
 							</tr>
 						</tfoot>
 					</table>
-					<button className="bg-(--social-bg) hover:bg-(--accent-bg) text-(--text) border border-(--border) p-3 m-5">
+					<button onClick={clearCart} className="bg-(--social-bg) hover:bg-(--accent-bg) text-(--text) border border-(--border) p-3 m-5">
 						Proceed to checkout
 					</button>
 				</>
