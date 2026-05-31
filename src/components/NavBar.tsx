@@ -11,9 +11,9 @@ export default function NavBar() {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [dark, setDark] = useState<boolean>(() => {
 		const stored = localStorage.getItem("theme");
-		if (stored === "dark") return true;
-		if (stored === "light") return false;
-		return window.matchMedia("(prefers-color-scheme: dark)").matches;
+		const isDark = stored === "dark" || (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+		document.documentElement.dataset.theme = isDark ? "dark" : "light";
+		return isDark;
 	});
 
 	useEffect(() => {
@@ -22,11 +22,12 @@ export default function NavBar() {
 	}, [dark]);
 
 	return (
-		<nav id="navBar">
+		<header id="navBar">
 			<div className="flex flex-col md:flex-row shadow-md text-(--text-h)">
 				<div className="flex items-stretch justify-between md:contents">
 					<Link
 						to="/"
+						id="logo"
 						className="bg-(--logo-bg) text-(--logo) p-6 text-xl font-medium md:order-1"
 						onClick={() => setMenuOpen(false)}
 					>
@@ -49,27 +50,48 @@ export default function NavBar() {
 						</button>
 					</div>
 				</div>
-
-				<ul className={`${menuOpen ? "flex" : "hidden"} md:flex md:order-2 flex-col md:flex-row flex-1 justify-around`}>
-					<li className="text-lg font-medium flex justify-center items-center p-5">
-						<NavLink to="/" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+				{/* --- HAMBURGER MENU --- */}
+				<ul
+					id="hamburger"
+					className={`${menuOpen ? "flex" : "hidden"} md:flex md:order-2 flex-col md:flex-row flex-1 justify-around`}
+				>
+					<li className="hover:underline underline-offset-15 text-lg font-medium flex justify-center items-center p-5">
+						<NavLink
+							to="/"
+							className="flex items-center gap-2 min-w-24"
+							onClick={() => setMenuOpen(false)}
+						>
 							<Home />
-							<span className="hover:underline underline-offset-10">Home</span>
+							<span className="">
+								Home
+							</span>
 						</NavLink>
 					</li>
-					<li className="text-lg font-medium flex justify-center items-center p-5">
-						<NavLink to="/shop" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+					<li className="hover:underline underline-offset-15 text-lg font-medium flex justify-center items-center p-5">
+						<NavLink
+							to="/shop"
+							className="flex items-center gap-2 min-w-24"
+							onClick={() => setMenuOpen(false)}
+						>
 							<Store />
-							<span className="hover:underline underline-offset-10">Shop</span>
+							<span className="">
+								Shop
+							</span>
 						</NavLink>
 					</li>
-					<li className="text-lg font-medium flex justify-center items-center p-5">
-						<NavLink to="/cart" className="flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+					<li className="hover:underline underline-offset-15 text-lg font-medium flex justify-center items-center p-5">
+						<NavLink
+							to="/cart"
+							className="relative flex items-center gap-2 min-w-24"
+							onClick={() => setMenuOpen(false)}
+						>
 							<ShoppingCart />
-							<span className="hover:underline underline-offset-10">Cart</span>
+							<span className="">
+								Cart
+							</span>
 							<span
 								id="counter"
-								className={`text-(--text) ml-3 border-2 border-(--border) rounded-sm h-8 w-6 ${cartItems.itemsTotal === 0 && "opacity-0"}`}
+								className={`bg-(--counter) text-shadow-2xs absolute left-[90%] text-(--text) border-2 border-(--border) rounded-sm h-8 w-8 ${cartItems.itemsTotal === 0 && "opacity-0"}`}
 							>
 								{cartItems.itemsTotal}
 							</span>
@@ -77,6 +99,6 @@ export default function NavBar() {
 					</li>
 				</ul>
 			</div>
-		</nav>
+		</header>
 	);
 }
